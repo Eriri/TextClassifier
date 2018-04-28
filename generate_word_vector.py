@@ -9,7 +9,8 @@ def generate_word_vector():
     ds = read_data.Data_Set()
     corpus = []
     endword = [' ', ',', '.', '?', '!', ';', '<', '>', '"', ':', '[', ']', '(', ')',
-               '，', '。', '？', '！', '《', '》', '；', '：', '“', '”', '‘', '’', '【', '】', '『', '』', '（', '）']
+               '，', '。', '？', '！', '《', '》', '；', '：', '“', '”', '‘', '’',
+               '【', '】', '『', '』', '（', '）', '/', '|', '\\']
     pb = progressbar.ProgressBar(max_value=14*2500)
     i = 1
 
@@ -27,7 +28,7 @@ def generate_word_vector():
         pb.update(i)
         i += 1
     w2v = models.Word2Vec(sentences=corpus)
-    w2v.save('w2vmodel')
+    w2v.save('../w2vmodel')
 
 
 if __name__ == '__main__':
