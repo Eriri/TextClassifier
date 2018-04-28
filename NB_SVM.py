@@ -34,9 +34,9 @@ def generate_model():
         pb.update(i+1)
         ds.test_data[i] = (' ').join(jieba.cut(ds.test_data[i]))
     mnb.fit(ds.train_data, ds.train_target)
-    joblib.dump(mnb, 'NBmodel')
+    joblib.dump(mnb, '../NBmodel')
     svc.fit(ds.train_data, ds.train_target)
-    joblib.dump(svc, 'SVMmodel')
+    joblib.dump(svc, '../SVMmodel')
 
     pred_traget = mnb.predict(ds.test_data)
     print('NB_predict_result')

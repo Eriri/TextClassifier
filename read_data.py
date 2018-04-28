@@ -1,3 +1,5 @@
+import numpy as np
+
 
 class Data_Set:
     def __init__(self):
@@ -27,3 +29,15 @@ class Data_Set:
         raw_file = open('../stopwords', 'r', encoding='utf-8')
         for word in raw_file.readlines():
             self.stopwords.add(word.strip('\n'))
+
+
+class Text_Vector:
+    def __init__(self):
+        self.names = ['房产', '股票', '财经', '娱乐',
+                      '社会', '教育', '体育', '科技', '时政', '游戏']
+        self.train_data = np.load('../tvdata.npz')['train_data']
+        self.train_target = np.load('../tvdata.npz')['train_target']
+        self.valid_data = np.load('../tvdata.npz')['valid_data']
+        self.valid_target = np.load('../tvdata.npz')['valid_target']
+        self.test_data = np.load('../tvdata.npz')['test_data']
+        self.test_target = np.load('../tvdata.npz')['test_target']

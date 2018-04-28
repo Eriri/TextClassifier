@@ -8,12 +8,10 @@ import progressbar
 def generate_word_vector():
     ds = read_data.Data_Set()
     corpus = []
-    endword = [' ', ',', '.', '?', '!', ';', '<', '>', '"', ':', '[', ']', '(', ')',
-               '，', '。', '？', '！', '《', '》', '；', '：', '“', '”', '‘', '’',
-               '【', '】', '『', '』', '（', '）', '/', '|', '\\']
-    pb = progressbar.ProgressBar(max_value=14*2500)
+    endword = [' ', ',', '.', '?', '!', ';', ':',
+               '，', '。', '？', '！', '；', '：']
+    pb = progressbar.ProgressBar(max_value=len(ds.train_data))
     i = 1
-
     for text in ds.train_data:
         final_text = []
         for word in jieba.cut(text):
@@ -27,7 +25,8 @@ def generate_word_vector():
             corpus.append(final_text)
         pb.update(i)
         i += 1
-    w2v = models.Word2Vec(sentences=corpus)
+    print(len(corpus))
+    w2v = models.Word2Vec(sentences=corpus, workers=4)
     w2v.save('../w2vmodel')
 
 
