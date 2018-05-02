@@ -20,9 +20,11 @@ def softmax():
     step = tf.train.GradientDescentOptimizer(0.5).minimize(CE)
     sess = tf.InteractiveSession()
     tf.global_variables_initializer().run()
-    for i in range(5000):
-        x = tv.train_data[10*i:10*i+10]
-        y = tv.train_target[10*i:10*i+10]
+    batch_size = 50
+    batch_steps = (int)(len(tv.train_data)/batch_size)
+    for i in range(batch_steps):
+        x = tv.train_data[i*batch_size:(i+1)*batch_size]
+        y = tv.train_target[i*batch_size:(i+1)*batch_size]
         sess.run(step, feed_dict={X: x, Y_: y})
     CP = tf.equal(tf.argmax(Y, 1), tf.argmax(Y_, 1))
     ACCU = tf.reduce_mean(tf.cast(CP, tf.float32))
