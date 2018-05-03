@@ -4,14 +4,19 @@ from gensim import models
 import read_data
 import progressbar
 
-w2v = models.word2vec.Word2Vec.load('../w2vmodel')
-vocab = set(w2v.wv.vocab)
-pb = progressbar.ProgressBar(max_value=len(vocab))
-T = []
-i = 0
-for word in vocab:
-    T.append(w2v.wv[word])
-    i += 1
-    pb.update(i)
-T = np.array(T)
-np.savez('../embedding_word', embedding_word=T)
+
+class CNN:
+    def __init__(self, text_length, cata_nums, vocab_data, word_dim, filter_sizes):
+        self.X = tf.placeholder(tf.int32, [None, text_length])
+        self.Y = tf.placeholder(tf.float32, [None, cata_nums])
+        self.drop_out_prob = tf.placeholder(tf.float32)
+        self.Vocab = tf.constant(vocab_data, tf.float32, vocab_data.shape)
+        self.Vocab_r = tf.variable(tf.random_uniform(
+            vocab_data.shape, tf.float32, -1.0, 1.0))
+        with tf.name_scope("embedding"):
+            self.Embedding = tf.stack(
+                [tf.nn.embedding_lookup(self.Vocab, self.X),
+                 tf.nn.embedding_lookup(self.Vocab_r, self.X)],
+                -1)
+        for i, filter_size = enumerate(filter_sizes):
+            with tf.name_scope("Convolution %s" % filter_size):
